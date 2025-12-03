@@ -58,3 +58,10 @@ typedef struct {
     int status; // 0 - ativo, 1 - devolvido
 }Emprestimo;
 
+//========== VARIAVEIS GLOBAIS ==========
+// Arrays para armazenar livros, usuarios e emprestimos
+
+Livro livros[MAX_LIVROS]; 
+Usuario usuarios[MAX_USUARIOS];
+Emprestimo emprestimos[MAX_EMPRESTIMOS];
+

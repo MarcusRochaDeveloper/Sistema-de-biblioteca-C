@@ -103,4 +103,35 @@ void relatorioAtrasados();
 void renovarEmprestimo();
 void menuPrincipal();
 
+//========== FUNCAO UTILITARIAS ==========
+// implementei uma funcao de limpar a tela do terminal 
+// para melhorar a experiencia do usuario.
+// Porem essa funcao pode nao funcionar em todos os sistemas operacionais 
+// no caso do windows, use o comando "cls".
+// Tambem foi adicionado uma funcao de pausar a execucao
+// para que o usuario possa ler as mensagens antes de prosseguir.
+
+void limparTela() {
+    system("clear");
+}
+
+void pausar() {
+    printf("Pressione Enter para continuar...");
+    limparBuffer(); // garante que o buffer esteja limpo antes do getchar
+    getchar();
+}
+
+// Limpa os caracateres restantes no buffer de entrada stdin
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+// Essa funcao vai ser responsavel por retornar a data atual do sistema
+Data dataAtual() {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    Data d = {tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900};
+    return d;
+}
 

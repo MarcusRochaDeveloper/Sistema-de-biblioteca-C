@@ -37,3 +37,13 @@ typedef struct {
     int disponiveis;
     int vezes_emprestado;
 }Livro;
+
+// Estrutura para representar um usuario
+typedef struct {
+    int matricula;
+    char nome[MAX_NOME];
+    char curso[MAX_CURSO];
+    char telefone[MAX_TEL];
+    Data cadastro;
+}Usuario;
+

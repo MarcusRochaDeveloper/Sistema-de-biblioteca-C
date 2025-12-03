@@ -17,3 +17,23 @@
 #define MAX_NOME 101
 #define MAX_CURSO 51
 #define MAX_TEL 16
+
+//========== ESTRUTURAS DE DADOS ==========
+// Estruturas simples para representar uma data
+
+typedef struct
+{
+    int dia, mes, ano;
+} Data;
+
+// Estrutura para representar um livro
+typedef struct {
+    int codigo;
+    char titulo[MAX_TITULO];
+    char autor[MAX_AUTOR];
+    char editora[MAX_EDITORA];
+    int ano;
+    int exemnplares;
+    int disponiveis;
+    int vezes_emprestado;
+}Livro;

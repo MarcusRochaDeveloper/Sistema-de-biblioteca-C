@@ -165,5 +165,46 @@ void adicionarDias(Data *d, int dias) {
     d->ano = tm.tm_year + 1900;
 }
 
+//========== DADOS ==========
+// Apesar da atividade mapa nao solicitar a implementacao de backup,
+// achei interessante implementar uma nova funcao.
+// Ela vai gerar um arquivo a partir da criacao do original
+// com sufixo .bak
+
+void backupAutomatico(const char *nome) {
+
+    // Implementei uma logica que espera que exista um arquivo temporario
+
+    char tmp[260];
+    snprintf(tmp, sizeof(tmp), "%s.tmp", nome);
+    safe_replace_with_backup(nome, tmp);
+}
+
+int safe_replace_with_backup(const char *filename, const char *tmpname)
+{
+    char backup[260];
+    snprintf(backup, sizeof(backup), "%s.bak", filename);
+
+    // remove backup antigo
+    remove(backup);
+
+    // se existe o arquivo original, renomeia para backup
+    FILE *fCheck = fopen(filename, "r");
+    if (fCheck != NULL)
+    {
+        fclose(fCheck); // Fecha pois so quero checar existencia
+        if (rename(filename, backup) != 0)
+            return 0; // falha
+    }
+
+    // renomeia temp -> filename
+    if (rename(tmpname, filename) != 0)
+    {
+        // tentativa de restaurar backup caso falhe
+        rename(backup, filename);
+        return 0;
+    }
+    return 1;
+}
 
 

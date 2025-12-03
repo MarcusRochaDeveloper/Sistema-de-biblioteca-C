@@ -451,4 +451,65 @@ void cadastrarLivro() {
             return;
         }
     }
+
+    limparBuffer(); 
+
+    printf("Titulo: ");
+    fgets(l.titulo, MAX_TITULO, stdin);
+    l.titulo[strcspn(l.titulo, "\n")] = 0;
+
+    printf("Autor: ");
+    fgets(l.autor, MAX_AUTOR, stdin);
+    l.autor[strcspn(l.autor, "\n")] = 0;
+
+    printf("Editora: ");
+    fgets(l.editora, MAX_EDITORA, stdin);
+    l.editora[strcspn(l.editora, "\n")] = 0;
+
+    printf("Ano de publicacao: ");
+    if (scanf("%d", &l.ano) != 1 || l.ano <= 0 ) {
+        printf("Ano invalido!\n");
+        limparBuffer();
+        pausar();
+        return;
+
+    }
+
+    printf("Numero de exemplares: ");
+    if (scanf("%d", &l.exemnplares) != 1 || l.exemnplares <= 0 ) {
+        printf("Numero de exemplares invalido!\n");
+        limparBuffer();
+        pausar();
+        return; 
+    }
+
+    l.disponiveis = l.exemnplares; // Inicialmente todos disponiveis
+    l.vezes_emprestado = 0;
+
+    livros[total_Livros++] = l; // Adiciona ao array
+    salvarLivros(); // Salva no arquivo
+
+    printf("Livro cadastrado com sucesso!\n");
+    pausar();
+
 }
+// Implementacao da funcao de cadastro de usuarios
+void cadastrarUsuario() {
+    limparTela();
+    if (total_Usuarios >= MAX_USUARIOS) {
+        printf("Limite de usuarios atingido!\n");
+        pausar();
+        return;
+    }
+
+    Usuario u;
+    
+    printf("=== Cadastro de Usuario ===\n");
+    printf("Matricula: ");
+    if (scanf("%d", &u.matricula) != 1 || u.matricula <= 0 ) {
+        printf("Matricula invalida!\n");
+        limparBuffer();
+        pausar();
+        return;
+    }
+}    

@@ -173,7 +173,7 @@ void adicionarDias(Data *d, int dias) {
 
 void backupAutomatico(const char *nome) {
 
-    // Implementei uma logica que espera que exista um arquivo temporario
+// Implementei uma logica que espera que exista um arquivo temporario
 
     char tmp[260];
     snprintf(tmp, sizeof(tmp), "%s.tmp", nome);
@@ -192,7 +192,7 @@ int safe_replace_with_backup(const char *filename, const char *tmpname)
     FILE *fCheck = fopen(filename, "r");
     if (fCheck != NULL)
     {
-        fclose(fCheck); // Fecha pois so quero checar existencia
+        fclose(fCheck); // Fecha pois so quero checar a existencia
         if (rename(filename, backup) != 0)
             return 0; // falha
     }
@@ -207,4 +207,96 @@ int safe_replace_with_backup(const char *filename, const char *tmpname)
     return 1;
 }
 
+// Salvar todos os livros em um txt
+
+void salvarLivros() {
+    char tmp[260];
+    snprintf(tmp, sizeof(tmp), "livros.txt.tmp");
+
+    FILE *arq = fopen(tmp, "w");
+    if (!arq) {
+        printf("ERRO! Nao foi possivel salvar os livros.\n");
+        return;
+    }
+
+    for (int i = 0; i < total_Livros; i++) {
+        fprintf(arq, "%d;%s;%s;%s;%d;%d;%d;%d\n",
+                livros[i].codigo,
+                livros[i].titulo,
+                livros[i].autor,
+                livros[i].editora,
+                livros[i].ano,
+                livros[i].exemnplares,
+                livros[i].disponiveis,
+                livros[i].vezes_emprestado);
+    }
+
+    fclose(arq);
+
+    if (!safe_replace_with_backup("livros.txt", tmp)) {
+        printf("ERRO! Nao foi possivel substituir os livros.\n");
+    }
+}
+
+
+// Salvar todos os usuarios em um txt
+void salvarUsuarios() {
+    char tmp[260];
+    snprintf(tmp, sizeof(tmp), "usuarios.txt.tmp");
+    FILE *arq = fopen(tmp, "w");
+
+    if (!arq) {
+        printf("ERRO! Nao foi possivel salvar os usuarios.\n");
+        return;
+    }
+
+    for (int i = 0; i < total_Usuarios; i++) {
+        fprintf(arq, "%d;%s;%s;%s;%d/%d/%d\n",
+                usuarios[i].matricula,
+                usuarios[i].nome,
+                usuarios[i].curso,
+                usuarios[i].telefone,
+                usuarios[i].cadastro.dia,
+                usuarios[i].cadastro.mes,
+                usuarios[i].cadastro.ano);
+    }
+    fclose(arq);
+    if (!safe_replace_with_backup("usuarios.txt", tmp)) {
+        printf("ERRO! Nao foi possivel substituir os usuarios.\n");
+    }
+}
+
+//  Salvar todos os emprestimos em um txt
+void salvarEmprestimos() {
+    char tmp[260];
+    snprintf(tmp, sizeof(tmp), "emprestimos.txt.tmp");
+    FILE *arq = fopen(tmp, "w");
+
+    if (!arq) {
+        printf("ERRO! Nao foi possivel salvar os emprestimos.\n");
+        return;
+    }
+
+    fprintf(arq, "%d\n", proximoCodEmprestimo);
+    for (int i = 0; i < total_Emprestimos; i++) {
+        fprintf(arq, "%d;%d;%d;%d/%d/%d;%d/%d/%d;%d/%d/%d;%d\n",
+                emprestimos[i].codigo,
+                emprestimos[i].matricula,
+                emprestimos[i].codigo_livro,
+                emprestimos[i].emprestimo.dia,
+                emprestimos[i].emprestimo.mes,
+                emprestimos[i].emprestimo.ano,
+                emprestimos[i].devolucao.dia,
+                emprestimos[i].devolucao.mes,
+                emprestimos[i].devolucao.ano,
+                emprestimos[i].previsto.dia,
+                emprestimos[i].previsto.mes,
+                emprestimos[i].previsto.ano,
+                emprestimos[i].status);
+    }
+    fclose(arq);
+    if (!safe_replace_with_backup("emprestimos.txt", tmp)) {
+        printf("ERRO! Nao foi possivel substituir os emprestimos.\n");
+    }
+}
 

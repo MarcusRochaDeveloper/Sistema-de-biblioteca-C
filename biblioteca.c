@@ -369,7 +369,44 @@ void carregarUsuarios() {
                 total_Usuarios++;
                 if(total_Usuarios >= MAX_USUARIOS) break;
             }
-            fclose(arq);
+            
+                fclose(arq);
+        
+            }
         }
     }
-}
+
+// Aqui carrega os emprestimos de um arquivo txt, preenchendo o array em memoria
+void carregarEmprestimos() {
+    FILE* arq = fopen("emprestimos.txt", "r");
+
+    if (!arq) {
+        return;
+
+        if (fscanf(arq, "%d\n", &proximoCodEmprestimo) != 1) {
+            proximoCodEmprestimo = 1; 
+
+            total_Emprestimos = 0;
+            while (fscanf(arq, "%d", &emprestimos[total_Emprestimos].codigo) == 1) {
+                if (fscanf(arq, "%d%d", &emprestimos[total_Emprestimos].matricula,
+                           &emprestimos[total_Emprestimos].codigo_livro) != 2) break; 
+                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].emprestimo.dia,
+                                       &emprestimos[total_Emprestimos].emprestimo.mes,
+                                       &emprestimos[total_Emprestimos].emprestimo.ano) != 3) break;
+                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].devolucao.dia,
+                                       &emprestimos[total_Emprestimos].devolucao.mes,
+                                       &emprestimos[total_Emprestimos].devolucao.ano) != 3) break;
+                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].previsto.dia,
+                                       &emprestimos[total_Emprestimos].previsto.mes,
+                                       &emprestimos[total_Emprestimos].previsto.ano) != 3) break;
+                            if(fscanf(arq, "%d\n", &emprestimos[total_Emprestimos].status) != 1) break;
+
+                            total_Emprestimos++;
+                            if(total_Emprestimos >= MAX_EMPRESTIMOS) break;
+                }
+
+                fclose(arq);
+            }
+        }
+    }
+

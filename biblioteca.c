@@ -4,13 +4,11 @@
 #include <time.h>
 
 //========== DEFINICOES E CONSTANTES==========
-
 #define MAX_LIVROS 1000
 #define MAX_USUARIOS 1000
 #define MAX_EMPRESTIMOS 2000
 
 //========== TAMANHOS MAXIMOS PARA STRINGS COM ESPACO PARA CARACTER NULO==========
-
 #define MAX_TITULO 101
 #define MAX_AUTOR 81
 #define MAX_EDITORA 61
@@ -20,7 +18,6 @@
 
 //========== ESTRUTURAS DE DADOS ==========
 // Estruturas simples para representar uma data
-
 typedef struct
 {
     int dia, mes, ano;
@@ -60,7 +57,6 @@ typedef struct {
 
 //========== VARIAVEIS GLOBAIS ==========
 // Arrays para armazenar livros, usuarios e emprestimos
-
 Livro livros[MAX_LIVROS]; 
 Usuario usuarios[MAX_USUARIOS];
 Emprestimo emprestimos[MAX_EMPRESTIMOS];
@@ -122,12 +118,14 @@ void pausar() {
 }
 
 // Limpa os caracateres restantes no buffer de entrada stdin
+
 void limparBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
 // Essa funcao vai ser responsavel por retornar a data atual do sistema
+
 Data dataAtual() {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -149,6 +147,7 @@ int compararDatas(Data d1, Data d2)
 }
 
 // Pensei em usar o mktime para facilitar a adicao de dias
+
 void adicionarDias(Data *d, int dias) {
 
     struct tm tm = {0};
@@ -189,6 +188,7 @@ int safe_replace_with_backup(const char *filename, const char *tmpname)
     remove(backup);
 
     // se existe o arquivo original, renomeia para backup
+    
     FILE *fCheck = fopen(filename, "r");
     if (fCheck != NULL)
     {
@@ -240,6 +240,7 @@ void salvarLivros() {
 
 
 // Salvar todos os usuarios em um txt
+
 void salvarUsuarios() {
     char tmp[260];
     snprintf(tmp, sizeof(tmp), "usuarios.txt.tmp");
@@ -267,6 +268,7 @@ void salvarUsuarios() {
 }
 
 //  Salvar todos os emprestimos em um txt
+
 void salvarEmprestimos() {
     char tmp[260];
     snprintf(tmp, sizeof(tmp), "emprestimos.txt.tmp");
@@ -301,6 +303,7 @@ void salvarEmprestimos() {
 }
 
 // Aqui carrega os livros de um arquivo txt, preenchendo o array em memoria 
+
 void carregarLivros() {
     FILE *arq = fopen("livros.txt", "r");
     if (!arq) {
@@ -317,8 +320,10 @@ void carregarLivros() {
         char editora[MAX_EDITORA];
 
         // formato salvo: %d;%s;%s;%s;%d;%d;%d;%d\n 
+
         if (sscanf(line, "%d;%100[^;];%80[^;];%60[^;];%d;%d;%d;%d",
                    &codigo, titulo, autor, editora, &ano, &exem, &dispon, &vezes) != 8) {
+
             continue; // linha mal-formada ou vazia
         }
 
@@ -343,6 +348,7 @@ void carregarLivros() {
 }
 
 // Aqui carrega os usuarios de um arquivo txt, preenchendo o array em memoria
+
 void carregarUsuarios() {
     FILE *arq = fopen("usuarios.txt", "r");
     if (!arq) {
@@ -377,6 +383,7 @@ void carregarUsuarios() {
     }
 
 // Aqui carrega os emprestimos de um arquivo txt, preenchendo o array em memoria
+
 void carregarEmprestimos() {
     FILE* arq = fopen("emprestimos.txt", "r");
 
@@ -410,6 +417,7 @@ void carregarEmprestimos() {
        
         }
     }
+
 //========== FUNCOES DO SISTEMA ==========
 // Implementacao das funcoes principais do sistema de biblioteca
 // como cadastrar livros, usuarios, realizar emprestimos, devolucoes etc.

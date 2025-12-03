@@ -65,3 +65,20 @@ Livro livros[MAX_LIVROS];
 Usuario usuarios[MAX_USUARIOS];
 Emprestimo emprestimos[MAX_EMPRESTIMOS];
 
+// Contadores para o numero de livros, usuarios e emprestimos cadastrados
+int total_Livros = 0; 
+int total_Usuarios = 0;
+int total_Emprestimos = 0;
+int proximoCodEmprestimo = 1; // Contador para o proximo codigo de emprestimo
+
+//========== PROTOTIPOS DAS FUNCOES ==========
+//Utilitarias para usar durante o programa
+
+void limparTela();
+void pausar();
+void limparBuffer();
+Data dataAtual();
+int compararDatas(Data d1, Data d2);
+void adicionarDias(Data *data, int dias);
+
+

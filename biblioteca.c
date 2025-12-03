@@ -104,7 +104,7 @@ void renovarEmprestimo();
 void menuPrincipal();
 
 //========== FUNCAO UTILITARIAS ==========
-// implementei uma funcao de limpar a tela do terminal 
+// Implementei uma funcao de limpar a tela do terminal 
 // para melhorar a experiencia do usuario.
 // Porem essa funcao pode nao funcionar em todos os sistemas operacionais 
 // no caso do windows, use o comando "cls".
@@ -133,5 +133,37 @@ Data dataAtual() {
     struct tm tm = *localtime(&t);
     Data d = {tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900};
     return d;
+}
+
+// Aqui vamos comparar duas datas,
+// retorna um valor negativo se d1 < d2, 
+// zero se forem iguais, positivo se d1 > d2
+
+int compararDatas(Data d1, Data d2)
+{
+    if (d1.ano != d2.ano)
+        return d1.ano - d2.ano;
+    if (d1.mes != d2.mes)
+        return d1.mes - d2.mes;
+    return d1.dia - d2.dia;
+}
+
+// Pensei em usar o mktime para facilitar a adicao de dias
+void adicionarDias(Data *d, int dias) {
+
+    struct tm tm = {0};
+    tm.tm_mday = d->dia;
+    tm.tm_mon = d->mes - 1;
+    tm.tm_year = d->ano - 1900;
+    tm.tm_isdst = -1; 
+
+    tm.tm_mday += dias; // Soma os dias
+    mktime(&tm); // Normaliza a estrutura tm
+
+    d->dia = tm.tm_mday;
+    d->mes = tm.tm_mon + 1;
+    d->ano = tm.tm_year + 1900;
+
+    
 }
 

@@ -300,3 +300,44 @@ void salvarEmprestimos() {
     }
 }
 
+// Aqui carrega os livros de um arquivo txt, preenchendo o array em memoria 
+void carregarLivros() {
+    FILE *arq = fopen("livros.txt", "r");
+    if (!arq) {
+        return;
+    }
+
+    char line[512];
+    total_Livros = 0;
+
+    while (fgets(line, sizeof(line), arq) != NULL) {
+        int codigo, ano, exem, dispon, vezes;
+        char titulo[MAX_TITULO];
+        char autor[MAX_AUTOR];
+        char editora[MAX_EDITORA];
+
+        // formato salvo: %d;%s;%s;%s;%d;%d;%d;%d\n 
+        if (sscanf(line, "%d;%100[^;];%80[^;];%60[^;];%d;%d;%d;%d",
+                   &codigo, titulo, autor, editora, &ano, &exem, &dispon, &vezes) != 8) {
+            continue; // linha mal-formada ou vazia
+        }
+
+        if (total_Livros >= MAX_LIVROS) break;
+
+        livros[total_Livros].codigo = codigo;
+        strncpy(livros[total_Livros].titulo, titulo, MAX_TITULO - 1);
+        livros[total_Livros].titulo[MAX_TITULO - 1] = '\0';
+        strncpy(livros[total_Livros].autor, autor, MAX_AUTOR - 1);
+        livros[total_Livros].autor[MAX_AUTOR - 1] = '\0';
+        strncpy(livros[total_Livros].editora, editora, MAX_EDITORA - 1);
+        livros[total_Livros].editora[MAX_EDITORA - 1] = '\0';
+        livros[total_Livros].ano = ano;
+        livros[total_Livros].exemnplares = exem;
+        livros[total_Livros].disponiveis = dispon;
+        livros[total_Livros].vezes_emprestado = vezes;
+
+        total_Livros++;
+    }
+
+    fclose(arq);
+}

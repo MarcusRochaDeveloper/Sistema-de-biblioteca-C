@@ -423,7 +423,6 @@ void carregarEmprestimos() {
 // como cadastrar livros, usuarios, realizar emprestimos, devolucoes etc.
 // A primeira funcao a ser implementada e o cadastro de livros.
 // e tambem faz validacoes para evitar cadastros duplicados.
-
 void cadastrarLivro() {
     limparTela();
     if (total_Livros >= MAX_LIVROS) {
@@ -493,6 +492,7 @@ void cadastrarLivro() {
     pausar();
 
 }
+
 // Implementacao da funcao de cadastro de usuarios
 void cadastrarUsuario() {
     limparTela();
@@ -503,13 +503,61 @@ void cadastrarUsuario() {
     }
 
     Usuario u;
-    
+
     printf("=== Cadastro de Usuario ===\n");
     printf("Matricula: ");
-    if (scanf("%d", &u.matricula) != 1 || u.matricula <= 0 ) {
-        printf("Matricula invalida!\n");
+    if (scanf("%d", &u.matricula) != 1 || u.matricula <= 0 ) { // Valida matricula
+        printf("\nMatricula invalida!\n");
+        limparBuffer();
+        pausar();
+        return;
+
+    }
+
+    for (int i = 0; i < total_Usuarios; i++) {
+        if (usuarios[i].matricula == u.matricula) { // Verifica duplicidade
+            printf("\nMatricula ja cadastrada!\n");
+            pausar();
+            return;
+
+        }
+    }
+
+    limparBuffer();
+
+    printf("Nome: ");
+    fgets(u.nome, MAX_NOME, stdin);
+    u.nome[strcspn(u.nome, "\n")] = 0;
+
+    printf("Curso: ");
+    fgets(u.curso, MAX_CURSO, stdin);
+    u.curso[strcspn(u.curso, "\n")] = 0;
+
+    printf("Telefone: ");
+    fgets(u.telefone, MAX_TEL, stdin);
+    u.telefone[strcspn(u.telefone, "\n")] = 0;
+
+    u.cadastro = dataAtual();
+    usuarios[total_Usuarios++] = u; // Adiciona ao array
+    salvarUsuarios(); // Salva no arquivo   
+
+    printf("\nUsuario cadastrado com sucesso!\n");
+
+    pausar();
+}    
+
+// Implementacao da funcao de realizar emprestimo
+void realizarEmprestimo() {
+    limparTela();
+    int mat, cod;
+    printf("=== Realizar emprestimo ===\n");
+    printf("Matricula do usuario: ");
+
+    if (scanf("%d", &mat) != 1 ) {
+        printf("Matricula invalida. \n");
         limparBuffer();
         pausar();
         return;
     }
-}    
+}
+

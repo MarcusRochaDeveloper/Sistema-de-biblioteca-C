@@ -341,3 +341,35 @@ void carregarLivros() {
 
     fclose(arq);
 }
+
+// Aqui carrega os usuarios de um arquivo txt, preenchendo o array em memoria
+void carregarUsuarios() {
+    FILE *arq = fopen("usuarios.txt", "r");
+    if (!arq) {
+        return;
+
+        total_Usuarios = 0;
+
+        while (fscanf(arq, "%d", &usuarios[total_Usuarios].matricula) == 1) {
+            fgetc(arq);
+
+            fgets(usuarios[total_Usuarios].nome, MAX_NOME, arq);
+            usuarios[total_Usuarios].nome[strcspn(usuarios[total_Usuarios].nome, "\n")] = 0;
+            fgets(usuarios[total_Usuarios].curso, MAX_CURSO, arq);
+            usuarios[total_Usuarios].curso[strcspn(usuarios[total_Usuarios].curso, "\n")] = 0;
+            fgets(usuarios[total_Usuarios].telefone, MAX_TEL, arq);
+            usuarios[total_Usuarios].telefone[strcspn(usuarios[total_Usuarios].telefone, "\n")] = 0;
+
+            if (fscanf(arq, "%d/%d/%d\n",
+                       &usuarios[total_Usuarios].cadastro.dia,
+                       &usuarios[total_Usuarios].cadastro.mes,
+                       &usuarios[total_Usuarios].cadastro.ano) != 3) {
+                break; 
+
+                total_Usuarios++;
+                if(total_Usuarios >= MAX_USUARIOS) break;
+            }
+            fclose(arq);
+        }
+    }
+}

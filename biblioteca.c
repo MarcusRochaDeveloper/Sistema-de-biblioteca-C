@@ -163,7 +163,7 @@ void adicionarDias(Data *d, int dias) {
     d->dia = tm.tm_mday;
     d->mes = tm.tm_mon + 1;
     d->ano = tm.tm_year + 1900;
-
-    
 }
+
+
 

@@ -72,13 +72,35 @@ int total_Emprestimos = 0;
 int proximoCodEmprestimo = 1; // Contador para o proximo codigo de emprestimo
 
 //========== PROTOTIPOS DAS FUNCOES ==========
-//Utilitarias para usar durante o programa
-
+// Utilitarias para usar durante o programa
 void limparTela();
 void pausar();
 void limparBuffer();
 Data dataAtual();
 int compararDatas(Data d1, Data d2);
 void adicionarDias(Data *data, int dias);
+
+// Arquivos
+void salvarLivros();
+void salvarUsuarios();
+void salvarEmprestimos();
+void carregarLivros();
+void carregarUsuarios();
+void carregarEmprestimos();
+void backupAutomatico(const char *nome);
+int safe_replace_with_backup(const char *filename, const char *tmpname);
+
+//Operacoes essenciais do sistema
+void cadastrarLivro();
+void cadastrarUsuario();
+void realizarEmprestimo();
+void realizarDevolucao();
+void pesquisarLivro();
+void pesquisarUsuario();
+void listarEmprestimosAtivos();
+void relatorioMaisEmprestados();
+void relatorioAtrasados();
+void renovarEmprestimo();
+void menuPrincipal();
 
 

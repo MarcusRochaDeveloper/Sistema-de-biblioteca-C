@@ -407,6 +407,40 @@ void carregarEmprestimos() {
 
                 fclose(arq);
             }
+       
         }
     }
+//========== FUNCOES DO SISTEMA ==========
+// Implementacao das funcoes principais do sistema de biblioteca
+// como cadastrar livros, usuarios, realizar emprestimos, devolucoes etc.
+// A primeira funcao a ser implementada e o cadastro de livros.
+// e tambem faz validacoes para evitar cadastros duplicados.
 
+void cadastrarLivro() {
+    limparTela();
+    if (total_Livros >= MAX_LIVROS) {
+
+        printf("Limite de livros atingido!\n");
+        pausar();
+        return;
+    }
+
+    Livro l;
+    printf ("=== Cadastro do Livro ===\n");
+    printf("Codigo: ");
+    if (scanf("%d", &l.codigo) != 1 || l.codigo <= 0 ) {
+        printf("Codigo invalido!\n");
+        limparBuffer();
+        pausar();
+        return;
+    }
+
+    // Verifica se o codigo ja existe
+    for (int i = 0; i < total_Livros; i++) {
+        if (livros[i].codigo == l.codigo) {
+            printf("Codigo ja cadastrado!\n");
+            pausar();
+            return;
+        }
+    }
+}

@@ -47,3 +47,14 @@ typedef struct {
     Data cadastro;
 }Usuario;
 
+// Estrutura para representar um emprestimo
+typedef struct {
+    int codigo;
+    int matricula;
+    int codigo_livro;
+    Data emprestimo;
+    Data devolucao;
+    Data previsto;
+    int status; // 0 - ativo, 1 - devolvido
+}Emprestimo;
+

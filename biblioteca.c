@@ -580,5 +580,28 @@ void realizarEmprestimo() {
         limparBuffer();
         pausar();
         return;
+
+    }
+
+    int idxLivro = -1; // Indice do livro no array
+    for(int i = 0; i < total_Livros; i++) {
+        if (livros[i].codigo == cod) {
+            idxLivro = i;
+            break;
+            
+        }
+    }
+
+    if (idxLivro == -1) {
+        printf("Livro nao encontrado.\n");
+        pausar();
+        return;
+    }
+
+    if (livros[idxLivro].disponiveis <= 0) { 
+        printf("Nenhum exemplar disponivel para emprestimo.\n");
+        pausar();
+        return;
+    }
 }
 

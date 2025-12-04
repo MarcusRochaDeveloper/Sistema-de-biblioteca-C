@@ -549,7 +549,7 @@ void cadastrarUsuario() {
 // Implementacao da funcao de realizar emprestimo
 void realizarEmprestimo() {
     limparTela();
-    int mat, cod;
+    int mat, cod; // Matricula do usuario e codigo do livro
     printf("=== Realizar emprestimo ===\n");
     printf("Matricula do usuario: ");
 
@@ -560,7 +560,7 @@ void realizarEmprestimo() {
         return;
     }
 
-    int idxUsuario = -1;
+    int idxUsuario = -1; // Indice do usuario no array
     for(int i = 0; i <total_Usuarios; i++) {
         if (usuarios[i].matricula == mat) {
             idxUsuario = i;

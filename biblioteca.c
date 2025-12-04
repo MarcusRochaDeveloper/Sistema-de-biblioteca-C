@@ -603,5 +603,29 @@ void realizarEmprestimo() {
         pausar();
         return;
     }
+
+    // Criar registro para emprestimos 
+
+    Emprestimo e;
+    e.codigo = proximoCodEmprestimo++;
+    e.matricula = mat;
+    e.codigo_livro = cod;
+    e.emprestimo = dataAtual();
+    e.previsto = e.emprestimo;
+    adicionarDias(&e.previsto, 7); // Prazo de 7 dias
+    e.devolucao.dia = (Data){0,0,0}.dia; // Data nula
+    e.status = 1;
+
+    emprestimos[total_Emprestimos++] = e; // Adiciona ao array
+    livros[idxLivro].disponiveis--; // Decrementa disponiveis
+    livros[idxLivro].vezes_emprestado++; // Incrementa vezes emprestado
+
+    salvarEmprestimos();
+    salvarLivros();
+
+    printf("Emprestimo realizado com sucesso!\n");
+    printf("Data prevista para devolucao: %02d/%02d/%04d\n",
+           e.previsto.dia, e.previsto.mes, e.previsto.ano);
+    pausar();
 }
 

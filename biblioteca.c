@@ -559,5 +559,26 @@ void realizarEmprestimo() {
         pausar();
         return;
     }
+
+    int idxUsuario = -1;
+    for(int i = 0; i <total_Usuarios; i++) {
+        if (usuarios[i].matricula == mat) {
+            idxUsuario = i;
+            break;
+        }
+    }
+
+    if (idxUsuario == -1) {
+        printf("Usuario nao encontrado.\n");
+        pausar();
+        return;
+    }
+
+    printf("Codigo do livro: ");
+    if (scanf("%d", &cod) != 1 ) {
+        printf("Codigo invalido. \n");
+        limparBuffer();
+        pausar();
+        return;
 }
 

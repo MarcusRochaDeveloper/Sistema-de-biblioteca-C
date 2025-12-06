@@ -635,6 +635,81 @@ void realizarEmprestimo() {
 // Implementacao da funcao de realizar devolucao,
 // Marca o emprestimo como devolvido e atualiza o estoque do livro
 void realizarDevolucao() {
-    
+
+    limparTela();
+    int codEmp;
+    int i = -1;
+
+    printf("=== Realizar devolucao ===\n");
+    printf("Codigo do emprestimo: ");
+    if (scanf("%d", &codEmp) != 1 ) {
+        printf("Codigo invalido. \n");
+        limparBuffer();
+        pausar();
+        return;  
+
+    }
+
+for (i = 0; i < total_Emprestimos; i++) {
+    if (emprestimos[i].codigo == codEmp && emprestimos[i].status == 1) {// Encontrou emprestimo ativo
+        emprestimos[i].status = 0; // Marca como devolvido
+        emprestimos[i].devolucao = dataAtual(); // Data de devolucao
+
+        for (int j = 0; j < total_Livros; j++) {
+            if (livros[j].codigo == emprestimos[i].codigo_livro) {
+                livros[j].disponiveis++; // Incrementa disponiveis
+                break;
+            }
+
+        if (compararDatas(emprestimos[i].devolucao, emprestimos[i].previsto) > 0) {
+            printf("Atencao! Livro entregue com atraso.\n");
+        }
+
+        break;
+    }
 }
+
+        salvarEmprestimos();
+        salvarLivros();
+
+        printf("Devolucao realizada com sucesso!\n");
+
+
+        if (compararDatas(emprestimos[i].devolucao, emprestimos[i].previsto) > 0) {
+            printf("Atencao! Livro entregue com atraso.\n");
+        }
+        pausar();
+        return;
+    }
+
+        printf("Emprestimo nao encontrado ou ja devolvido.\n");
+        pausar();
+}
+
+void pesquisarLivro() {
+    
+
+    limparTela();
+    int op;
+    char busca[100];
+    int encontrou = 0; // Flag para indicar se encontrou resultados
+    
+    printf("=== Pesquisar Livro ===\n");
+
+    printf("1. Por Titulo\n");
+    printf("2. Por Autor\n");
+    printf("3. Por Codigo\n");
+    printf("Escolha uma opcao: ");
+
+    if (scanf("%d", &op)!=1){limparBuffer(); print("Opcao invalida.\n"); pausar(); return;}
+    limparBuffer();
+
+}
+
+    
+
+
+   
+
+
 

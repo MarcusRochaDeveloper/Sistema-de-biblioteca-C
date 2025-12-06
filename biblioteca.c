@@ -701,12 +701,238 @@ void pesquisarLivro() {
     printf("3. Por Codigo\n");
     printf("Escolha uma opcao: ");
 
-    if (scanf("%d", &op)!=1){limparBuffer(); print("Opcao invalida.\n"); pausar(); return;}
-    limparBuffer();
+    if (scanf("%d", &op)!=1){
 
+        limparBuffer();
+        print("Opcao invalida.\n");
+        pausar(); 
+        return;}
+
+
+    if (op == 1) {
+
+        int cod;
+
+        printf("Digite o titulo do livro: ");
+        fgets(busca, 100, stdin);
+        busca[strcspn(busca, "\n")] = 0; 
+        printf("\nResultados da pesquisa por titulo:\n");
+
+        for (int i = 0; i < total_Livros; i++) {
+
+            char *campo = (op == 1) ? livros[i].titulo : livros[i].autor;
+
+            if (strstr(campo, busca)) {
+
+                printf("[#%d] %s - %s (%d) - Exemplares disponiveis: %d\n",
+                       livros[i].codigo,
+                       livros[i].titulo,
+                       livros[i].autor,
+                       livros[i].disponiveis);
+
+                       encontrou = 1;
+            }
+                    
+
+        }
+
+    }
+
+    else if (op == 2 || op == 3) {
+
+        printf("Digite o termo de busca:");
+        fgets(busca, 100, stdin);
+        busca[strcspn(busca, "\n")] = 0;    
+
+        printf("\nResultados da pesquisa:\n");
+
+        for(int i = 0; i < total_Livros; i++) {
+
+            char *campo = (op == 2) ? livros[i].titulo : livros[i].autor;
+
+
+            if (strstr(campo, busca)) {
+
+                printf("[#%d] %s - %s (%d) - Exemplares disponiveis: %d\n",
+                       livros[i].codigo,
+                       livros[i].titulo,
+                       livros[i].autor,
+                       livros[i].disponiveis);
+
+                       encontrou = 1;
+            }
+
+        }
+
+    }
+
+    else {
+
+        printf("Opcao invalida.\n");
+    }
+
+    if (!encontrou) {
+        printf("Nenhum livro encontrado com os criterios fornecidos.\n");
+        pausar();
+
+    }
+    
 }
 
-    
+void pesquisarUsuario() {
+
+    limparTela();
+    int op;
+    int mat;
+
+    printf("=== Pesquisar Usuario ===\n");
+    printf("1. Por Matricula\n");
+    printf("2. Por Nome\n");
+
+    printf("Escolha uma opcao: ");
+
+    if(scanf("%d", &op)!=1){ {
+        limparBuffer();
+         printf("Opcao invalida.\n"); 
+         pausar(); 
+         return;
+
+         if (op == 1) {
+
+            printf("Digite a matricula do usuario: ");
+
+            if (scanf("%d", &mat) != 1) {
+
+                print("Matricula invalida.\n");
+                
+                pausar();
+                return;
+            }
+
+            for (int i = 0; i < total_Usuarios; i++) {
+
+                if (usuarios[i].matricula == mat) {
+
+                    printf("Usuario encontrado:\n");
+                    printf("Matricula: %d\n", usuarios[i].matricula);
+                    printf("Nome: %s\n", usuarios[i].nome);
+                    printf("Curso: %s\n", usuarios[i].curso);
+                    printf("Telefone: %s\n", usuarios[i].telefone);
+                    printf("Data de cadastro: %02d/%02d/%04d\n",
+                           usuarios[i].cadastro.dia,
+                           usuarios[i].cadastro.mes,
+                           usuarios[i].cadastro.ano);
+                    pausar();
+                    return;
+                }
+
+            }
+
+            printf("Usuario nao encontrado.\n");
+            pausar();
+
+         }
+
+         else if (op == 2) {
+            
+            char termo[100];
+
+            printf("Digite o nome ou parte nome: ");
+            fgets(termo, sizeof(termo), stdin);
+            termo[strcspn(termo, "\n")] = 0;  // remove nova linha
+
+            int encontrou = 0;
+
+            for (int i = 0; i < total_Usuarios; i++) {
+
+                if (strstr(usuarios[i].nome, termo)) {
+
+                    printf("Usuario encontrado:\n");
+                    printf("Matricula: %d\n", usuarios[i].matricula);
+                    printf("Nome: %s\n", usuarios[i].nome);
+                    printf("Curso: %s\n", usuarios[i].curso);
+                    printf("Telefone: %s\n", usuarios[i].telefone);
+                    printf("Data de cadastro: %02d/%02d/%04d\n",
+                           usuarios[i].cadastro.dia,
+                           usuarios[i].cadastro.mes,
+                           usuarios[i].cadastro.ano);
+
+
+                    encontrou = 1;
+
+                }   
+
+            }
+
+            if (!encontrou) {
+                printf("Nenhum usuario encontrado com o nome fornecido.\n");
+                pausar();
+            }
+
+            else {
+                
+                printf("Opcao invalida.\n");
+                pausar();
+            }
+            
+         }
+
+        }
+
+    }
+}
+
+void listarEmprestimosAtivos() {
+
+    limparTela();
+
+    printf("=== Emprestimos Ativos ===\n");
+
+    int count = 0;
+
+    for (int i = 0; i <total_Emprestimos; i++) {
+
+        if (emprestimos[i].status == 1) {
+
+            char nome[100] = "DESCONHECIDO", titulo[100] = "DESCONHECIDO"; // Nomes padroes
+
+            for (int j = 0; j < total_Usuarios; j++) {
+
+
+                if (usuarios[j].matricula == emprestimos[i].matricula) { // Procura o nome do usuario
+
+                    strcpy(nome, usuarios[j].nome);
+                    break;
+                }
+
+                for (int j = 0; j <total_Livros; j++) { // Procura o titulo do livro
+
+                    strcpy(titulo, livros[j].titulo);
+                    break;  
+
+                }
+
+                printf("ID Emprestimo: %d | Usuario: %s | Livro: %s | Data Emprestimo: %02d/%02d/%04d | Data Prevista: %02d/%02d/%04d\n",
+                       emprestimos[i].codigo,
+                       nome,
+                       titulo,
+                       emprestimos[i].previsto.dia,
+                       emprestimos[i].previsto.mes,
+                       emprestimos[i].previsto.ano);
+
+                       count++;
+
+            }
+        }
+
+        if (count == 0) {
+            printf("Nenhum emprestimo ativo encontrado.\n");
+            pausar();
+        }
+
+    }
+
+}  
 
 
    

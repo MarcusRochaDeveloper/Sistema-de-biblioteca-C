@@ -1,3 +1,4 @@
+//========== BIBLIOTECA.C ==========
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -129,7 +130,7 @@ void limparBuffer() {
 Data dataAtual() {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
-    Data d = {tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900};
+    Data d = {tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900}; // Ajusta mes e ano
     return d;
 }
 
@@ -154,7 +155,7 @@ void adicionarDias(Data *d, int dias) {
     tm.tm_mday = d->dia;
     tm.tm_mon = d->mes - 1;
     tm.tm_year = d->ano - 1900;
-    tm.tm_isdst = -1; 
+    tm.tm_isdst = -1; // O sistema determina se e horario de verao
 
     tm.tm_mday += dias; // Soma os dias
     mktime(&tm); // Normaliza a estrutura tm
@@ -233,7 +234,7 @@ void salvarLivros() {
 
     fclose(arq);
 
-    if (!safe_replace_with_backup("livros.txt", tmp)) {
+    if (!safe_replace_with_backup("livros.txt", tmp)) { 
         printf("ERRO! Nao foi possivel substituir os livros.\n");
     }
 }
@@ -359,7 +360,7 @@ void carregarUsuarios() {
         while (fscanf(arq, "%d", &usuarios[total_Usuarios].matricula) == 1) {
             fgetc(arq);
 
-            fgets(usuarios[total_Usuarios].nome, MAX_NOME, arq);
+            fgets(usuarios[total_Usuarios].nome, MAX_NOME, arq); 
             usuarios[total_Usuarios].nome[strcspn(usuarios[total_Usuarios].nome, "\n")] = 0;
             fgets(usuarios[total_Usuarios].curso, MAX_CURSO, arq);
             usuarios[total_Usuarios].curso[strcspn(usuarios[total_Usuarios].curso, "\n")] = 0;
@@ -393,23 +394,25 @@ void carregarEmprestimos() {
         if (fscanf(arq, "%d\n", &proximoCodEmprestimo) != 1) {
             proximoCodEmprestimo = 1; 
 
+            // Se falhar, reinicia o contador
             total_Emprestimos = 0;
-            while (fscanf(arq, "%d", &emprestimos[total_Emprestimos].codigo) == 1) {
-                if (fscanf(arq, "%d%d", &emprestimos[total_Emprestimos].matricula,
-                           &emprestimos[total_Emprestimos].codigo_livro) != 2) break; 
-                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].emprestimo.dia,
-                                       &emprestimos[total_Emprestimos].emprestimo.mes,
-                                       &emprestimos[total_Emprestimos].emprestimo.ano) != 3) break;
-                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].devolucao.dia,
-                                       &emprestimos[total_Emprestimos].devolucao.mes,
-                                       &emprestimos[total_Emprestimos].devolucao.ano) != 3) break;
-                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].previsto.dia,
-                                       &emprestimos[total_Emprestimos].previsto.mes,
-                                       &emprestimos[total_Emprestimos].previsto.ano) != 3) break;
-                            if(fscanf(arq, "%d\n", &emprestimos[total_Emprestimos].status) != 1) break;
+            while (fscanf(arq, "%d", &emprestimos[total_Emprestimos].codigo) == 1) {  // Le o codigo do emprestimo
+                if (fscanf(arq, "%d%d", &emprestimos[total_Emprestimos].matricula,    // Le a matricula do usuario
+                           &emprestimos[total_Emprestimos].codigo_livro) != 2) break; // Le o codigo do livro
+                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].emprestimo.dia, // Le a data de emprestimo
+                                       &emprestimos[total_Emprestimos].emprestimo.mes, // Le o mes
+                                       &emprestimos[total_Emprestimos].emprestimo.ano) != 3) break; // Le o ano
+                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].devolucao.dia, // Le a data de devolucao
+                                       &emprestimos[total_Emprestimos].devolucao.mes, // Le o mes
+                                       &emprestimos[total_Emprestimos].devolucao.ano) != 3) break; // Le o ano
+                            if(fscanf(arq, "%d%d%d", &emprestimos[total_Emprestimos].previsto.dia, // Le a data prevista
+                                       &emprestimos[total_Emprestimos].previsto.mes, // Le o mes
+                                       &emprestimos[total_Emprestimos].previsto.ano) != 3) break; // Le o ano
+                            if(fscanf(arq, "%d\n", &emprestimos[total_Emprestimos].status) != 1) break; // Le o status
 
+                            // Incrementa o contador
                             total_Emprestimos++;
-                            if(total_Emprestimos >= MAX_EMPRESTIMOS) break;
+                            if(total_Emprestimos >= MAX_EMPRESTIMOS) break; // Limite atingido
                 }
 
                 fclose(arq);
@@ -432,7 +435,7 @@ void cadastrarLivro() {
         return;
     }
 
-    Livro l;
+    Livro l; // Livro temporario para cadastro
     printf ("=== Cadastro do Livro ===\n");
     printf("Codigo: ");
     if (scanf("%d", &l.codigo) != 1 || l.codigo <= 0 ) {
@@ -483,7 +486,7 @@ void cadastrarLivro() {
     }
 
     l.disponiveis = l.exemnplares; // Inicialmente todos disponiveis
-    l.vezes_emprestado = 0;
+    l.vezes_emprestado = 0; // Nenhum emprestimo ainda
 
     livros[total_Livros++] = l; // Adiciona ao array
     salvarLivros(); // Salva no arquivo
@@ -604,9 +607,9 @@ void realizarEmprestimo() {
         return;
     }
 
-    // Criar registro para emprestimos 
+    // Cria registro para emprestimos 
 
-    Emprestimo e;
+    Emprestimo e; // Emprestimo temporario
     e.codigo = proximoCodEmprestimo++;
     e.matricula = mat;
     e.codigo_livro = cod;
@@ -627,5 +630,11 @@ void realizarEmprestimo() {
     printf("Data prevista para devolucao: %02d/%02d/%04d\n",
            e.previsto.dia, e.previsto.mes, e.previsto.ano);
     pausar();
+}
+
+// Implementacao da funcao de realizar devolucao,
+// Marca o emprestimo como devolvido e atualiza o estoque do livro
+void realizarDevolucao() {
+    
 }
 

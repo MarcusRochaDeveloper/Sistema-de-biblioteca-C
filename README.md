@@ -1,7 +1,7 @@
 # 📚 Sistema de Gerenciamento de Biblioteca em C
 
-> **Nota:** Este projeto foi desenvolvido como um **Trabalho Acadêmico** para a disciplina de [Nome da Disciplina] do curso de [Nome do Curso]. O objetivo é demonstrar conhecimentos em lógica de programação, manipulação de arquivos e estruturas de dados em C.
-
+> **Nota:** Este projeto foi desenvolvido como um **Trabalho Acadêmico** para a disciplina de - LINGUAGEM E TÉCNICAS DE PROGRAMAÇÃO]. O objetivo é demonstrar conhecimentos em lógica de programação, manipulação de arquivos e estruturas de dados em C.
+ 
 ---
 
 ## 📋 Sobre o Projeto

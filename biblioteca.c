@@ -29,12 +29,12 @@
 #define MAX_USUARIOS 1000
 #define MAX_EMPRESTIMOS 2000
 
-#define MAX_TITULO 101
-#define MAX_AUTOR 81
-#define MAX_EDITORA 61
+#define MAX_TITULO 10
+#define MAX_AUTOR 80
+#define MAX_EDITORA 60
 #define MAX_NOME 101
-#define MAX_CURSO 51
-#define MAX_TEL 16
+#define MAX_CURSO 50
+#define MAX_TEL 11
 
 //========== ESTRUTURAS DE DADOS ==========
 typedef struct {
@@ -67,7 +67,7 @@ typedef struct {
     Data emprestimo;
     Data devolucao;
     Data previsto;
-    int status; // 0 - devolvido, 1 - ativo
+    int status; // 0 - devolvido, 1 - ativoa
 } Emprestimo;
 
 //========== VARIAVEIS GLOBAIS ==========

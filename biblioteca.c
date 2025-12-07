@@ -1,3 +1,24 @@
+// Sistema de Gerenciamento de Biblioteca
+// Autor: Marcus Vinicius Carias da Silva Rocha
+// Descricao: Implementacao de um sistema simples de gerenciamento de biblioteca
+// com funcionalidades de cadastro de livros, usuarios, emprestimos e devolucoes.
+// Permite pesquisar livros e usuarios, listar emprestimos ativos,
+// gerar relatorios de livros mais emprestados e emprestimos atrasados.
+// Utiliza arquivos de texto para persistencia dos dados.
+// Permite backup automatico dos arquivos de dados.
+//=================================================
+
+// Repositorio GitHub: https://github.com/MarcusRochaDeveloper/Sistema-de-biblioteca-C.git
+
+//=================================================
+
+// Instrucoes de compilacao:
+// gcc -o biblioteca biblioteca.c 
+// ./biblioteca
+
+//=================================================
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

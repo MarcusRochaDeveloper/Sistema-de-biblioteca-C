@@ -8,6 +8,8 @@
 
 Este é um sistema simples baseado em console (CLI) para o gerenciamento de uma biblioteca pequena a média. O software permite o cadastro de livros e usuários, além do controle de empréstimos e devoluções, garantindo a persistência dos dados através de arquivos binários/texto.
 
+<img width="1920" height="1080" alt="Screenshot From 2025-12-06 23-25-47" src="https://github.com/user-attachments/assets/2a79cde9-3b50-4551-b1b4-aa40cf3c6bad" />
+
 ### 🚀 Funcionalidades Principais
 
 * **Gerenciamento de Acervo:** Cadastro e consulta de livros.

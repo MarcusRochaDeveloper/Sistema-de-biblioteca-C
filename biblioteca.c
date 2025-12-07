@@ -714,7 +714,7 @@ void pesquisarLivro() {
         int cod;
 
         printf("Digite o titulo do livro: ");
-        fgets(busca, 100, stdin);
+        fgets(busca, 100, stdin); // Lendo o titulo
         busca[strcspn(busca, "\n")] = 0; 
         printf("\nResultados da pesquisa por titulo:\n");
 
@@ -724,7 +724,7 @@ void pesquisarLivro() {
 
             if (strstr(campo, busca)) {
 
-                printf("[#%d] %s - %s (%d) - Exemplares disponiveis: %d\n",
+                printf("[#%d] %s - %s (%d) - Exemplares disponiveis: %d\n", // Mostra resultados
                        livros[i].codigo,
                        livros[i].titulo,
                        livros[i].autor,
@@ -748,7 +748,7 @@ void pesquisarLivro() {
 
         for(int i = 0; i < total_Livros; i++) {
 
-            char *campo = (op == 2) ? livros[i].titulo : livros[i].autor;
+            char *campo = (op == 2) ? livros[i].titulo : livros[i].autor; // Seleciona campo
 
 
             if (strstr(campo, busca)) {
@@ -801,7 +801,7 @@ void pesquisarUsuario() {
 
             printf("Digite a matricula do usuario: ");
 
-            if (scanf("%d", &mat) != 1) {
+            if (scanf("%d", &mat) != 1) { // Valida entrada
 
                 print("Matricula invalida.\n");
                 
@@ -813,6 +813,7 @@ void pesquisarUsuario() {
 
                 if (usuarios[i].matricula == mat) {
 
+                    // Mostra dados do usuario
                     printf("Usuario encontrado:\n");
                     printf("Matricula: %d\n", usuarios[i].matricula);
                     printf("Nome: %s\n", usuarios[i].nome);
@@ -838,7 +839,7 @@ void pesquisarUsuario() {
             char termo[100];
 
             printf("Digite o nome ou parte nome: ");
-            fgets(termo, sizeof(termo), stdin);
+            fgets(termo, sizeof(termo), stdin); // Lendo o nome
             termo[strcspn(termo, "\n")] = 0;  // remove nova linha
 
             int encontrou = 0;
@@ -920,7 +921,7 @@ void listarEmprestimosAtivos() {
                        emprestimos[i].previsto.mes,
                        emprestimos[i].previsto.ano);
 
-                       count++;
+                       count++; // Incrementa contador
 
             }
         }
@@ -934,8 +935,218 @@ void listarEmprestimosAtivos() {
 
 }  
 
+void relatorioMaisEmprestados() {
 
-   
+    printf("=== Relatorio dos Livros Mais Emprestados ===\n");
+
+    Livro temp[MAX_LIVROS];
+    int qtd = total_Livros;
+
+    for (int i = 0; i < qtd; i++) {
+        temp[i] = livros[i];
+
+        for (int j = 0; i < qtd; i++) {
+
+            if (temp[j].vezes_emprestado > temp[i].vezes_emprestado) {
+
+                Livro t = temp[i];
+                temp[i] = temp[j];
+                temp[j] = t;
+
+
+            }
+
+        }
+    }
+
+    int n = qtd < 10 ? qtd : 10; // Top 10 ou menos
+
+    for (int i = 0; i < n; i++) {
+
+        printf("%d, %s - %d emprestimos\n", i + 1, temp[i].titulo, temp[i].vezes_emprestado);
+    }
+
+    pausar();
+}
+
+void relatorioAtrasados() {
+
+    limparTela();
+    Data hoje = dataAtual();
+
+    printf("=== Relatorio de Emprestimos Atrasados ===\n");
+
+    int count = 0; 
+
+    for (int i = 0; i < total_Emprestimos; i++) {
+
+        if (emprestimos[i].status == 1 && compararDatas(hoje, emprestimos[i].previsto) > 0) {
+
+
+            char nome[100] = "?";
+            char titulo[100] = "?";
+
+            for (int j =0; j < total_Usuarios; j++) {
+                
+                if (usuarios[j].matricula == emprestimos[i].matricula) strcpy(nome, usuarios[j].nome);
+
+            for (int j = 0; j < total_Livros; j++) 
+                if (livros[j].codigo == emprestimos[i].codigo_livro) strcpy(titulo, livros[j].titulo);
+
+                printf("Atrasado: %s (Usuario: %s)\nVenceu em: %02d/%02d/%04d\n\n",
+                       titulo,
+                       nome,
+                       emprestimos[i].previsto.dia,
+                       emprestimos[i].previsto.mes,
+                       emprestimos[i].previsto.ano);
+
+                       count++;
+            }
+        }
+
+        if (count == 0) {
+
+            printf("Nenhum emprestimo atrasado encontrado.\n");
+            pausar();
+            
+        }
+    }
+
+}
+
+void renovarEmprestimo() {
+
+    limparTela();
+    int cod;
+
+    printf("=== Renovar Emprestimo ===\n");
+    printf("Codigo do emprestimo: ");
+
+    if (scanf("%d", &cod) != 1 ) {
+        printf("Codigo invalido. \n");
+        limparBuffer();
+        pausar();
+        return;  
+    }
+
+    for (int i = 0; i <total_Emprestimos; i++) {
+        if (emprestimos[i ].codigo == cod && emprestimos[i].status == 1) { 
+
+            if (compararDatas(dataAtual(), emprestimos[i].previsto) > 0) {
+                printf("Emprestimo atrasado. Devolva-o primeiro.\n");
+            }
+            
+            else {
+                
+                adicionarDias(&emprestimos[i].previsto, 7);
+                salvarEmprestimos();
+
+                printf("Emprestimo renovado com sucesso! Nova data: %02d %02d %02d\n",
+
+                        emprestimos[i].previsto.dia,
+                        emprestimos[i].previsto.mes,
+                        emprestimos[i].previsto.ano);
+                
+            }
+
+            pausar();
+            return; 
+        }
+    }
+
+    printf("Emprestimo nao encontrado ou ja devolvido.\n");
+    pausar();
+
+}
+
+void menuPrincipal() {
+
+    int op;
+
+    do {
+
+        limparTela();
+        printf("=== Sistema de Biblioteca ===\n");
+        printf("1. Cadastrar Livro\n");
+        printf("2. Cadastrar Usuario\n");
+        printf("3. Realizar Emprestimo\n");
+        printf("4. Realizar Devolucao\n");
+        printf("5. Pesquisar Livro\n");
+        printf("6. Pesquisar Usuario\n");
+        printf("7. Listar Emprestimos Ativos\n");
+        printf("8. Relatorio dos Livros Mais Emprestados\n");
+        printf("9. Relatorio de Emprestimos Atrasados\n");
+        printf("10. Renovar Emprestimo\n");
+        printf("0. Sair\n");
+        printf("Escolha uma opcao: ");
+
+        if (scanf("%d", &op) != 1) {
+            limparBuffer();
+            op = -1; // Opcao invalida
+        }
+
+        switch (op) {
+            case 1: 
+                cadastrarLivro(); 
+            break;
+
+            case 2: 
+                cadastrarUsuario(); 
+            break;
+
+            case 3: 
+                realizarEmprestimo(); 
+            break;
+
+            case 4: 
+                realizarDevolucao(); 
+            break;
+
+            case 5: 
+                pesquisarLivro(); 
+            break;
+
+            case 6: 
+                pesquisarUsuario();
+            break;
+
+            case 7: 
+                listarEmprestimosAtivos();
+            break;
+
+            case 8: 
+                relatorioMaisEmprestados(); 
+            break;
+
+            case 9: 
+                relatorioAtrasados(); 
+            break;
+
+            case 10: 
+            renovarEmprestimo(); 
+            break;
+
+            case 0: 
+                printf("Saindo do sistema...\n"), (salvarLivros(), salvarUsuarios(), salvarEmprestimos());
+            break;
+
+            default: printf("Opcao invalida. Tente novamente.\n"); pausar(); break;
+            pausar();
+        }
+
+    }while (op != 0);
+}
+
+int main() {
+
+    carregarLivros();
+    carregarUsuarios();
+    carregarEmprestimos();
+    menuPrincipal();
+
+    return 0;
+}
+
 
 
 
